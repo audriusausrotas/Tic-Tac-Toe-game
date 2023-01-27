@@ -28,11 +28,17 @@ let canPlayerMove = true;
 function clickHandler(id) {
   info.innerHTML = "";
   if (!gameOn || !canPlayerMove) return;
+  
+  ////////////////////////////////////////////////////////////////
+  // checks if player clicked on field that was alreay ocupied by player or PC
 
   if (p2.includes(id) || p1.includes(id)) {
     info.innerHTML = "Can't pick already picked field";
     return;
   }
+  
+  /////////////////////////////////////////////////////////////////
+  // adds O to the screen
 
   steps++;
   color(id, "p1");
@@ -49,14 +55,14 @@ function pc() {
   let step = Math.round(Math.random() * 8).toString();
 
   //////////////////////////////////////////////////////////////////
-  // checks all combinations that can win and where player is not present
+  // checks combinations that can win and player has no O on them
 
   const freeCombinations = possibleValues.filter((item) =>
     item.every((aaa) => !p1.includes(aaa.toString()))
   );
 
   ///////////////////////////////////////////////////////////////////////
-  // checks all combinations where PC already has fields taken
+  // checks combinations where PC has X on them and follows that pattern
 
   const fastestWin = freeCombinations.filter((item) =>
     item.some((aaa) => p2.includes(aaa.toString()))
@@ -79,12 +85,12 @@ function pc() {
   pickStep();
 
   //////////////////////////////////////////////////////////////////////////
-  // check if player needs to be stopped
+  // check if player is 1 move away from winning and places X there
 
   pcCheck("stop");
 
   //////////////////////////////////////////////////////////////////////////
-  // check if PC can win in the next step
+  // check if PC can win in the next step and place O there
 
   p2.length >= 1 && pcCheck();
 
@@ -99,7 +105,7 @@ function pc() {
   }
 
   //////////////////////////////////////////////////////////////////////////
-  // checks if player is near win or PC is near win and picks the right move
+  // function that checks if player is near win or PC is near win and picks the right move
 
   function pcCheck(arr) {
     const temp = arr === "stop" ? p1 : p2;
